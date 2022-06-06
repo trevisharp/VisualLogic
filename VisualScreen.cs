@@ -5,13 +5,17 @@ using System.Drawing;
 
 public class VisualScreen
 {
+    public VisualScreen(LogicApp parent)
+        => this.app = parent;
+
     Bitmap bmp = null;
     Graphics g = null;
     Timer tm = null;
     Form form = null;
     PictureBox pb = null;
+    LogicApp app = null;
 
-    public int TimerDelay { get; set; } = 25;
+    public int TimerDelay { get; set; } = 100;
 
     public void Open()
     {
@@ -23,7 +27,6 @@ public class VisualScreen
         this.pb.Dock = DockStyle.Fill;
 
         this.tm = new Timer();
-        this.tm.Interval = 25;
 
         this.form = new Form();
         this.form.FormBorderStyle = FormBorderStyle.None;
@@ -35,7 +38,7 @@ public class VisualScreen
             if (e.KeyCode == Keys.Escape)
                 Application.Exit();
         };
-        this.form.Load += delegate
+        this.form.Load += async delegate
         {
             this.bmp = new Bitmap(this.pb.Width, this.pb.Height);
             this.g = Graphics.FromImage(this.bmp);
@@ -47,7 +50,17 @@ public class VisualScreen
             args.Form = form;
             args.Graphics = g;
             args.PictureBox = pb;
-            args.Delay = TimerDelay;
+            args.Delay = 25;
+
+            this.tm.Interval = TimerDelay;
+            tm.Tick += async delegate
+            {
+                await app.CallHookAsync(HookType.OnTick);
+            };
+            if (TimerDelay > 0)
+                tm.Start();
+
+            await app.CallHookAsync(HookType.OnAppStart);
         };
         Application.Run(this.form);
     }
