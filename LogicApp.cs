@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace VisualLogic;
 
-using System.Threading.Tasks;
 using Exceptions;
 
 public abstract class LogicApp
