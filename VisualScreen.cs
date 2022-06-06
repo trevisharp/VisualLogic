@@ -50,7 +50,7 @@ public class VisualScreen
             args.Form = form;
             args.Graphics = g;
             args.PictureBox = pb;
-            args.Delay = 25;
+            args.Delay = TimerDelay;
 
             this.tm.Interval = TimerDelay;
             tm.Tick += async delegate
