@@ -11,7 +11,7 @@ public abstract class LogicApp
     private DependecyInjectionManager man = null;
     private List<(HookType hook, string func)> hooks = new List<(HookType, string)>();
     public int Fps { get; set; } = 25;
-    protected abstract DIBuilder DefineDependencyInjection();
+    protected abstract DIBuilder DefineDependencyInjection(DIBuilder builder);
     protected abstract void LoadFromParams(params object[] args);
     protected abstract void SetRunHooks();
     public void AddRunHook(string function, HookType hook)
@@ -29,7 +29,8 @@ public abstract class LogicApp
         {
             app.LoadFromParams(args);
             app.SetRunHooks();
-            app.man = app.DefineDependencyInjection().Build();
+            DIBuilder builder = new DIBuilder();
+            app.man = app.DefineDependencyInjection(builder).Build();
         }
         var screen = new VisualScreen(app);
         screen.Delay = delay;
