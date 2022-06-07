@@ -38,7 +38,7 @@ public class DependecyInjectionManager
     
     public void AddMethod(string name)
     {
-        var types = Assembly.GetExecutingAssembly().GetTypes();
+        var types = Assembly.GetEntryAssembly().GetTypes();
         foreach (var type in types)
         {
             var lwname = type.Name.ToLower();
@@ -111,7 +111,9 @@ public class DependecyInjectionManager
         foreach (var func in type.GetRuntimeMethods())
         {
             var lwname = func.Name.ToLower();
-            if (!lwname.Contains("<main>g__" + name + "|"))
+            string expected = "<<main>$>g__" + name.ToLower();
+            if (lwname.Length < expected.Length ||
+                lwname.Substring(0, expected.Length) != expected)
                 continue;
             this.methods.Add(name, func);
             return;

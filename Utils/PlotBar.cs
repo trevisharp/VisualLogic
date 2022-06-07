@@ -13,7 +13,7 @@ public class PlotBar
     {
         var len = values.Count();
         var size = rect.Width / (3 * len + 1);
-        var ppv = (Max - Min) / (rect.Height - Min);
+        var ppv = (Max - Min) / (rect.Height - 100);
         var it = values.GetEnumerator();
         for (float i = size; i < rect.Width && it.MoveNext(); i += 3 * size)
         {
@@ -23,7 +23,9 @@ public class PlotBar
                 0,
                 (int)(255 * (1 - value))
             ));
-            g.FillRectangle(color, i, rect.Height - it.Current * ppv - 50, 2 * size, it.Current * ppv + 5);
+            g.FillRectangle(color, i, 
+                rect.Height - (it.Current - Min) * ppv - 50,
+                2 * size, (it.Current - Min) * ppv + 5);
         }
     }
 }

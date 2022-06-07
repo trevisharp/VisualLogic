@@ -6,12 +6,9 @@ using System.Collections.Generic;
 
 namespace VisualLogic;
 
-using Exceptions;
-
 public abstract class LogicApp
 {
     private DependecyInjectionManager man = null;
-    private VisualScreen screen = null;
     private List<(HookType hook, string func)> hooks = new List<(HookType, string)>();
     public int Fps { get; set; } = 25;
     protected abstract DIBuilder DefineDependencyInjection();
@@ -25,20 +22,22 @@ public abstract class LogicApp
         foreach (var func in funcs)
             await man.RunAsync(func);
     }
-    public static void Run(int fps, params object[] args)
+    public static void Run(int delay, params object[] args)
     {
         var app = getapp();
-        if (app == null)
-            throw new InexistentLogicAppException();
-        app.LoadFromParams(args);
-        app.man = app.DefineDependencyInjection().Build();
+        if (app != null)
+        {
+            app.LoadFromParams(args);
+            app.SetRunHooks();
+            app.man = app.DefineDependencyInjection().Build();
+        }
         var screen = new VisualScreen(app);
+        screen.Delay = delay;
         screen.Open();
     }
-
     private static LogicApp getapp()
     {
-        var types = Assembly.GetExecutingAssembly().GetTypes();
+        var types = Assembly.GetEntryAssembly().GetTypes();
         foreach (var type in types)
         {
             if (type.BaseType != typeof(LogicApp))

@@ -5,6 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
 
     <PackageId>VisualLogic</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>1.1.0</Version>
     <Authors>Leonardo Trevisan</Authors>
     <Company>Trevisharp</Company>

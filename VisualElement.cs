@@ -5,16 +5,16 @@ namespace VisualLogic;
 
 public abstract class VisualElement
 {
-    private VisualArgs args = null;
+    public static VisualArgs VisualArguments { get; set; }
 
     protected void Update()
     {
-        lock (args.Graphics)
+        lock (VisualArguments.Graphics)
         {
-            Draw(args.Bitmap, args.Graphics);
-            args.PictureBox.Refresh();
+            Draw(VisualArguments.Bitmap, VisualArguments.Graphics);
+            VisualArguments.PictureBox.Refresh();
         }
-        Thread.Sleep(args.Delay);
+        Thread.Sleep(VisualArguments.Delay);
     }
 
     protected abstract void Draw(Bitmap bmp, Graphics g);

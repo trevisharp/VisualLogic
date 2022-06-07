@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace VisualLogic;
 
+using System;
+using Exceptions;
+
 public class VisualScreen
 {
     public VisualScreen(LogicApp parent)
@@ -15,7 +18,7 @@ public class VisualScreen
     PictureBox pb = null;
     LogicApp app = null;
 
-    public int TimerDelay { get; set; } = 100;
+    public int Delay { get; set; } = 100;
 
     public void Open()
     {
@@ -50,17 +53,21 @@ public class VisualScreen
             args.Form = form;
             args.Graphics = g;
             args.PictureBox = pb;
-            args.Delay = TimerDelay;
+            args.Delay = Delay;
+            VisualElement.VisualArguments = args;
+            
+            if (app == null)
+                throw new InexistentLogicAppException();
 
-            this.tm.Interval = TimerDelay;
+            this.tm.Interval = Delay;
             tm.Tick += async delegate
             {
-                await app?.CallHookAsync(HookType.OnTick);
+                await app.CallHookAsync(HookType.OnTick);
             };
-            if (TimerDelay > 0)
+            if (Delay > 0)
                 tm.Start();
 
-            await app?.CallHookAsync(HookType.OnAppStart);
+            await app.CallHookAsync(HookType.OnAppStart);
         };
         Application.Run(this.form);
     }
