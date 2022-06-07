@@ -36,4 +36,16 @@ else
         $i++
     }
 }
-dotnet nuget push .\bin\Release\VisualLogic.1.0.0.nupkg --api-key $apikey --source https://api.nuget.org/v3/index.json
+$csproj = Get-Content VisualLogic.csproj
+$i = 0
+while ($i -lt $csproj.Length)
+{
+    if ($csproj[$i].Contains("Version"))
+    {
+        $version = $csproj[$i].substring(13, $csproj[$i].Length -23)
+        break;
+    }
+    $i++
+}
+$file = ".\bin\Release\VisualLogic." + $version + ".nupkg"
+dotnet nuget push $file --api-key $apikey --source https://api.nuget.org/v3/index.json

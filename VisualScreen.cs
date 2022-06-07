@@ -55,12 +55,12 @@ public class VisualScreen
             this.tm.Interval = TimerDelay;
             tm.Tick += async delegate
             {
-                await app.CallHookAsync(HookType.OnTick);
+                await app?.CallHookAsync(HookType.OnTick);
             };
             if (TimerDelay > 0)
                 tm.Start();
 
-            await app.CallHookAsync(HookType.OnAppStart);
+            await app?.CallHookAsync(HookType.OnAppStart);
         };
         Application.Run(this.form);
     }

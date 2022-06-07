@@ -11,19 +11,14 @@ using Exceptions;
 public abstract class LogicApp
 {
     private DependecyInjectionManager man = null;
+    private VisualScreen screen = null;
     private List<(HookType hook, string func)> hooks = new List<(HookType, string)>();
-    public int Fps { get; set; }
+    public int Fps { get; set; } = 25;
     protected abstract DIBuilder DefineDependencyInjection();
     protected abstract void LoadFromParams(params object[] args);
     protected abstract void SetRunHooks();
     public void AddRunHook(string function, HookType hook)
         => this.hooks.Add((hook, function));
-    public void Run()
-    {
-        VisualScreen screen = new VisualScreen(this);
-        screen.TimerDelay = Fps;
-        screen.Open();
-    }
     public async Task CallHookAsync(HookType hook)
     {
         var funcs = getfuncs(hook);
@@ -37,6 +32,8 @@ public abstract class LogicApp
             throw new InexistentLogicAppException();
         app.LoadFromParams(args);
         app.man = app.DefineDependencyInjection().Build();
+        var screen = new VisualScreen(app);
+        screen.Open();
     }
 
     private static LogicApp getapp()

@@ -6,8 +6,8 @@ namespace VisualLogic.Utils;
 
 public class PlotBar
 {
-    public float Min { get; set; }
-    public float Max { get; set; }
+    public float Min { get; set; } = 0;
+    public float Max { get; set; } = 100;
 
     public void Draw(Graphics g, RectangleF rect, IEnumerable<float> values)
     {

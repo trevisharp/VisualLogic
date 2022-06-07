@@ -17,7 +17,7 @@ public class DependecyInjectionManager
     }
     
     #region Private Fields
-
+    
     private Dictionary<string, MethodInfo> methods = new Dictionary<string, MethodInfo>();
     private List<InstanceDefinition> instances = new List<InstanceDefinition>();
 
