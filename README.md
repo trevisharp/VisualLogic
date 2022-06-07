@@ -77,8 +77,28 @@ void solution(VisualArray array)
 Uma aplicação com a solution vazia pode ser entregue ao usuário. Lá ele pode implementar e testar a sua solução enquanto varia os parâmetros de Delay de apresentação e tamanho do Array.
 É importante perceber que é possível implementar heranças de VisualElement possibilitando diversos tipos de desafios ou utilizar um objeto existente na VisualLogic.Elements.
 
-## TODO
+Normalmente seu .csproj deve ser como o abaixo, uma aplicação UseWindowsForms=true para net6.0-windows.
+
+``` cs
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
+    <TargetFramework>net6.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="VisualLogic" Version="1.2.0" />
+  </ItemGroup>
+
+</Project>
+```
+
+## Future Improvements
 
 - Change Tutorial to English
+- Create a Full documentation
 - Add more default Elements
 - Improve DependecyInjection abstraction
+- Change desktop framework to a MAUI cross-plataform
