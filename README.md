@@ -34,7 +34,7 @@ public class SortLogicApp : LogicApp
 }
 ```
 
-```
+``` cs
 using VisualLogic.Elements;
 
 SortLogicApp.Run(25, 40);
