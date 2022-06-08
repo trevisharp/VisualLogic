@@ -15,6 +15,7 @@ public struct Vector
     public double Z { get; set; }
 
     public double Mod => Math.Sqrt(X * X + Y * Y + Z * Z);
+    public Vector Adj => ((Y + Z), -X, -X);
 
     public static implicit operator Vector((double x, double y, double z) tuple)
         => new Vector(tuple.x, tuple.y, tuple.z);

@@ -39,11 +39,17 @@ public class Plot3DCamera
         }
     }
 
-    public Plot3DCamera(Vector position, Vector direction, double focaldistance)
+    public Vector CameraVectorX { get; set; }
+    public Vector CameraVectorY { get; set; }
+
+    public Plot3DCamera(Vector position, Vector direction, 
+        double focaldistance, Vector camvecx, Vector camvecy)
     {
         this.camera = position;
         this.dir = direction;
         this.focal = focaldistance;
+        this.CameraVectorX = camvecx;
+        this.CameraVectorY = camvecy;
     }
 
     public void DrawPolygon(Pen pen, params Vector[] points)
@@ -57,9 +63,17 @@ public class Plot3DCamera
             camera + dir / dir.Mod * focal, dir);
     }
 
-    private PointF vectortoscreen(Vector vector)
+    private PointF vectortoscreen(Vector point)
     {
-        var r = Camera - vector;
-        var p0 = Camera + CameraDirection * FocalDistance;
+        var r = point - Camera;
+        var p = plane.Intersection(r, Camera);
+        var center = plane.Intersection(dir, Camera);
+        var d = p - center;
+        double x = 0, y = 0;
+        // x * CameraVectorX + y * CameraVectorY = d
+        // x * cx.X + y * cy.X = d.X
+        // x * cx.Y
+
+        return new PointF((float)x, (float)y);
     }
 }
