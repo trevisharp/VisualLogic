@@ -5,6 +5,7 @@ namespace VisualLogic.Elements;
 
 public class VisualSurface : VisualElement
 {
+    private double cx, cy, cz;
     private double[] data;
     private int lenx;
     private int lenz;
@@ -47,6 +48,10 @@ public class VisualSurface : VisualElement
         this.minx = minx;
         this.resolution = resolution;
 
+        this.cx = (maxx + minx) / 2;
+        this.cz = (maxz + minz) / 2;
+        this.cz = 5.0;
+
         Random rand =new Random(DateTime.Now.Millisecond);
     }
 
@@ -72,6 +77,8 @@ public class VisualSurface : VisualElement
             }
         }
     }
+
+
 
     private void drawtriangule(Graphics g, float x1, float y1, float x2, float y2, float x3, float y3)
     {
