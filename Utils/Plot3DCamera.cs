@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Drawing;
 
 namespace VisualLogic.Utils;
@@ -52,9 +53,14 @@ public class Plot3DCamera
         this.CameraVectorY = camvecy;
     }
 
-    public void DrawPolygon(Pen pen, params Vector[] points)
+    public void DrawPolygon(Graphics g, Pen pen, params Vector[] points)
     {
+        g.DrawPolygon(pen, points.Select(v => vectortoscreen(v)).ToArray());
+    }
 
+    public void FillPolygon(Graphics g, Brush brush, params Vector[] points)
+    {
+        g.FillPolygon(brush, points.Select(v => vectortoscreen(v)).ToArray());
     }
 
     private void updateplane()
