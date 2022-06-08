@@ -4,6 +4,9 @@ namespace VisualLogic.Utils;
 
 public struct Vector
 {
+    public static Vector uX => (1.0, 0, 0);
+    public static Vector uY => (1.0, 1.0, 0);
+    public static Vector uZ => (1.0, 0, 1.0);
     public Vector(double x, double y, double z)
     {
         this.X = x;
@@ -15,7 +18,7 @@ public struct Vector
     public double Z { get; set; }
 
     public double Mod => Math.Sqrt(X * X + Y * Y + Z * Z);
-    public Vector Adj => ((Y + Z), -X, -X);
+    public Vector Orto => ((Y + Z), -X, -X);
 
     public static implicit operator Vector((double x, double y, double z) tuple)
         => new Vector(tuple.x, tuple.y, tuple.z);

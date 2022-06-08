@@ -3,9 +3,11 @@ using System.Drawing;
 
 namespace VisualLogic.Elements;
 
+using Utils;
+
 public class VisualSurface : VisualElement
 {
-    private double cx, cy, cz;
+    private Plot3DCamera camera;
     private double[] data;
     private int lenx;
     private int lenz;
@@ -48,11 +50,13 @@ public class VisualSurface : VisualElement
         this.minx = minx;
         this.resolution = resolution;
 
-        this.cx = (maxx + minx) / 2;
-        this.cz = (maxz + minz) / 2;
-        this.cz = 5.0;
+        double cx = (maxx + minx) / 2;
+        double cz = maxz + 1.0;
+        double cy = 5.0;
 
         Random rand =new Random(DateTime.Now.Millisecond);
+        camera = new Plot3DCamera((cx, cy, cz),
+            Vector.uZ, 1.0, Vector.uX, Vector.uY);
     }
 
     public double this[double x, double z]
@@ -76,17 +80,5 @@ public class VisualSurface : VisualElement
                 int index = k * lenz + i;
             }
         }
-    }
-
-
-
-    private void drawtriangule(Graphics g, float x1, float y1, float x2, float y2, float x3, float y3)
-    {
-        g.DrawPolygon(Pens.Black, new PointF[]
-        {
-            new PointF(x1, y1),
-            new PointF(x2, y2),
-            new PointF(x3, y3)
-        });
     }
 }
