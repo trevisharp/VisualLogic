@@ -45,7 +45,7 @@ public abstract class LogicApp
                 continue;
             return type.GetConstructor(new Type[0]).Invoke(null) as LogicApp;
         }
-        return null;
+        return new DefaultLogicApp();
     }
 
     private IEnumerable<string> getfuncs(HookType hook)
