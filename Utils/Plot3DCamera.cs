@@ -69,11 +69,8 @@ public class Plot3DCamera
         var p = plane.Intersection(r, Camera);
         var center = plane.Intersection(dir, Camera);
         var d = p - center;
-        double x = 0, y = 0;
-        // x * CameraVectorX + y * CameraVectorY = d
-        // x * cx.X + y * cy.X = d.X
-        // x * cx.Y
-
-        return new PointF((float)x, (float)y);
+        var ls = new LinearSystem();
+        var soltuion = ls.SolveVectors(d, this.CameraVectorX, this.CameraVectorY);
+        return new PointF((float)soltuion[0], (float)soltuion[1]);
     }
 }
