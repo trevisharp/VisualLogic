@@ -4,9 +4,9 @@ namespace VisualLogic.Utils;
 
 public struct Vector
 {
-    public static Vector uX => (1.0, 0, 0);
-    public static Vector uY => (1.0, 1.0, 0);
-    public static Vector uZ => (1.0, 0, 1.0);
+    public static Vector uX => (1.0, 0.0, 0.0);
+    public static Vector uY => (0.0, 1.0, 0.0);
+    public static Vector uZ => (0.0, 0.0, 1.0);
     public Vector(double x, double y, double z)
     {
         this.X = x;

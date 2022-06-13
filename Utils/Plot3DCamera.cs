@@ -51,6 +51,7 @@ public class Plot3DCamera
         this.focal = focaldistance;
         this.CameraVectorX = camvecx;
         this.CameraVectorY = camvecy;
+        updateplane();
     }
 
     public void DrawPolygon(Graphics g, Pen pen, int wid, int hei, float ppv, params Vector[] points)
@@ -60,7 +61,6 @@ public class Plot3DCamera
             ppv * p.X + wid,
             ppv * p.Y + hei
             )).ToArray();
-        // throw new System.Exception($"{pts[0]}   {pts[1]}    {pts[2]}");
         g.DrawPolygon(pen, pts);
     }
 
@@ -76,8 +76,8 @@ public class Plot3DCamera
 
     private void updateplane()
     {
-        this.plane = new Plane(
-            camera + dir / dir.Mod * focal, dir);
+        this.plane = new Plane(dir,
+            camera + dir / dir.Mod * focal);
     }
 
     private PointF vectortoscreen(Vector point)
@@ -88,7 +88,7 @@ public class Plot3DCamera
         var d = p - center;
         var ls = new LinearSystem();
         var soltuion = ls.SolveLinearCombination(this.CameraVectorX, this.CameraVectorY, d);
-        float a = (float)soltuion[0], b = (float)soltuion[1];
+        float a = (float)soltuion[0], b = -(float)soltuion[1];
         return new PointF(a, b);
     }
 }

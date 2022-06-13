@@ -27,10 +27,13 @@ public struct Plane
     public Vector Intersection(Vector vec, Vector pnt)
     {
         //a (px - t vx) + b (py - t vy) + c (pz - t vz) + d = 0
-        //a px + b py + c pz + d = t (vx + vy + vz)
-        //t = (a px + b py + c pz + d) / (vx + vy + vz)
+        //a px + b py + c pz + d = t (a vx + b vy + c vz)
+        //t = (a px + b py + c pz + d) / (a vx + b vy + c vz)
         //p + t * vec = intersection point
-        double t = (A * pnt.X + B * pnt.Y + C * pnt.Z) / (vec.X + vec.Y + vec.Z);
-        return pnt + t * vec;
+        double t = (A * pnt.X + B * pnt.Y + C * pnt.Z + D) / (A * vec.X + B * vec.Y + C * vec.Z);
+        return pnt - t * vec;
     }
+
+    public override string ToString()
+        => $"{A} x + {B} y + {C} z + {D} = 0";
 }

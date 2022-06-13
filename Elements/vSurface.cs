@@ -52,12 +52,12 @@ public class vSurface : VisualElement
         this.resolution = resolution;
 
         double cx = (maxx + minx) / 2;
-        double cz = maxz + 1.0;
+        double cz = -1.0;
         double cy = 5.0;
 
         Random rand =new Random(DateTime.Now.Millisecond);
         camera = new Plot3DCamera((cx, cy, cz),
-            Vector.uZ, 1.0, Vector.uX, Vector.uY);
+            Vector.uZ, 0.5, Vector.uX, Vector.uY);
     }
 
     public double this[double x, double z]
