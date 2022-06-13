@@ -13,7 +13,7 @@ public class PlotBar
     {
         var len = values.Count();
         var size = rect.Width / (3 * len + 1);
-        var ppv = (Max - Min) / (rect.Height - 100);
+        var ppv = (rect.Height - 100) / (Max - Min);
         var it = values.GetEnumerator();
         for (float i = size; i < rect.Width && it.MoveNext(); i += 3 * size)
         {

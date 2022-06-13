@@ -11,17 +11,21 @@ public abstract class LogicApp
     private DependecyInjectionManager man = null;
     private List<(HookType hook, string func)> hooks = new List<(HookType, string)>();
     public int Fps { get; set; } = 25;
-    protected abstract DIBuilder DefineDependencyInjection(DIBuilder builder);
+    
+    protected abstract void DefineDependencyInjection(DIBuilder builder);
     protected abstract void LoadFromParams(params object[] args);
     protected abstract void SetRunHooks();
+    
     public void AddRunHook(string function, HookType hook)
         => this.hooks.Add((hook, function));
+    
     public async Task CallHookAsync(HookType hook)
     {
         var funcs = getfuncs(hook);
         foreach (var func in funcs)
             await man.RunAsync(func);
     }
+    
     public static void Run(int delay, params object[] args)
     {
         var app = getapp();
@@ -30,12 +34,14 @@ public abstract class LogicApp
             app.LoadFromParams(args);
             app.SetRunHooks();
             DIBuilder builder = new DIBuilder();
-            app.man = app.DefineDependencyInjection(builder).Build();
+            app.DefineDependencyInjection(builder);
+            app.man = builder.Build();
         }
         var screen = new VisualScreen(app);
         screen.Delay = delay;
         screen.Open();
     }
+    
     private static LogicApp getapp()
     {
         var types = Assembly.GetEntryAssembly().GetTypes();
