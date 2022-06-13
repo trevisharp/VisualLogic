@@ -43,4 +43,7 @@ public struct Vector
 
     public static Vector operator /(Vector v, double a)
         => (v.X / a, v.Y / a, v.Z / a);
+
+    public override string ToString()
+        => $"({X}, {Y}, {Z})";
 }

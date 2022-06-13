@@ -53,14 +53,25 @@ public class Plot3DCamera
         this.CameraVectorY = camvecy;
     }
 
-    public void DrawPolygon(Graphics g, Pen pen, params Vector[] points)
+    public void DrawPolygon(Graphics g, Pen pen, int wid, int hei, float ppv, params Vector[] points)
     {
-        g.DrawPolygon(pen, points.Select(v => vectortoscreen(v)).ToArray());
+        var pts = points.Select(v => vectortoscreen(v)).ToArray();
+        pts = pts.Select(p => new PointF(
+            ppv * p.X + wid,
+            ppv * p.Y + hei
+            )).ToArray();
+        // throw new System.Exception($"{pts[0]}   {pts[1]}    {pts[2]}");
+        g.DrawPolygon(pen, pts);
     }
 
-    public void FillPolygon(Graphics g, Brush brush, params Vector[] points)
+    public void FillPolygon(Graphics g, Brush brush, Bitmap bmp, float ppv, params Vector[] points)
     {
-        g.FillPolygon(brush, points.Select(v => vectortoscreen(v)).ToArray());
+        var pts = points.Select(v => vectortoscreen(v)).ToArray();
+        pts = pts.Select(p => new PointF(
+            ppv * p.X + bmp.Width / 2,
+            ppv * p.Y + bmp.Height / 2))
+            .ToArray();
+        g.FillPolygon(brush, pts);
     }
 
     private void updateplane()
@@ -76,7 +87,8 @@ public class Plot3DCamera
         var center = plane.Intersection(dir, Camera);
         var d = p - center;
         var ls = new LinearSystem();
-        var soltuion = ls.SolveVectors(d, this.CameraVectorX, this.CameraVectorY);
-        return new PointF((float)soltuion[0], (float)soltuion[1]);
+        var soltuion = ls.SolveLinearCombination(this.CameraVectorX, this.CameraVectorY, d);
+        float a = (float)soltuion[0], b = (float)soltuion[1];
+        return new PointF(a, b);
     }
 }

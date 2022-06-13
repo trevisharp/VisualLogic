@@ -5,7 +5,7 @@ namespace VisualLogic.Elements;
 
 using Utils;
 
-public class VSurface : VisualElement
+public class vSurface : VisualElement
 {
     private Plot3DCamera camera;
     private double[] data;
@@ -35,7 +35,8 @@ public class VSurface : VisualElement
         data[i + k * lenx] = value;
     }
 
-    public VSurface(
+    public vSurface() : this(0.0, 5.0, 0.0, 5.0, 0.25, 0.0, 5.0) { }
+    public vSurface(
         double minx, double maxx, 
         double minz, double maxz,
         double resolution,
@@ -47,7 +48,7 @@ public class VSurface : VisualElement
         this.minx = minx;
         this.minz = minz;
         this.maxx = maxx;
-        this.minx = minx;
+        this.maxz = maxz;
         this.resolution = resolution;
 
         double cx = (maxx + minx) / 2;
@@ -73,12 +74,19 @@ public class VSurface : VisualElement
     }
     protected override void Draw(Bitmap bmp, Graphics g)
     {
-        throw new NotImplementedException();
-        for (int k = 0; k <lenz; k++)
+        int wid = bmp.Width / 2, hei = bmp.Height / 2;
+        for (int k = 0; k < lenz - 1; k++)
         {
             for (int i = 0; i < lenx - 1; i++)
             {
-                int index = k * lenz + i;
+                int index = k * lenx + i;
+                Vector u = (minx + i * resolution, data[index], minz + k * resolution),
+                       v = (minx + (i + 1) * resolution, data[index + 1], minz + k * resolution),
+                       w = (minx + i * resolution, data[index + lenz], minz + (k + 1) * resolution);
+                camera.DrawPolygon(g, Pens.Black, wid, hei, 200f, u, v, w);
+
+                u = (minx + (i + 1) * resolution, data[index + 1 + lenz], minz + (k + 1) * resolution);
+                camera.DrawPolygon(g, Pens.Black, wid, hei, 200f, u, v, w);
             }
         }
     }
