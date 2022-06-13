@@ -3,7 +3,6 @@ using System.Windows.Forms;
 
 namespace VisualLogic;
 
-using System;
 using Exceptions;
 
 public class VisualScreen
