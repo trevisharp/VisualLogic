@@ -5,7 +5,7 @@ namespace VisualLogic.Elements;
 
 using Utils;
 
-public class VisualSurface : VisualElement
+public class VSurface : VisualElement
 {
     private Plot3DCamera camera;
     private double[] data;
@@ -35,7 +35,7 @@ public class VisualSurface : VisualElement
         data[i + k * lenx] = value;
     }
 
-    public VisualSurface(
+    public VSurface(
         double minx, double maxx, 
         double minz, double maxz,
         double resolution,
