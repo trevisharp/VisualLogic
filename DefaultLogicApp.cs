@@ -11,7 +11,7 @@ public class DefaultLogicApp : LogicApp
             .AddInstance(new vRandomArray(0, 100, 20));
     }
 
-    protected override void LoadFromParams(params object[] args)
+    protected override void LoadFromParams(AppArgs args)
     {
         
     }

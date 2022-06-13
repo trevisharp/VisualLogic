@@ -9,6 +9,7 @@ public class vArray : VisualElement
     protected float[] data;
     protected PlotBar plot;
 
+    public vArray() : this(0, 1000, 50) { }
     public vArray(int min, int max, int values)
     {
         data = new float[values];

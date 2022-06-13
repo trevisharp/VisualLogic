@@ -19,7 +19,6 @@ public class DIMethod
         InstanceDefinition def = new InstanceDefinition();
         def.Type = typeof(T);
         def.Value = value;
-        def.Condition = t => t.type == def.Type;
         this.instances.Add(def);
         return this;
     }
@@ -27,22 +26,30 @@ public class DIMethod
     public void Run()
     {
         List<object> parameters = new List<object>();
-        int i = 0;
+        List<InstanceDefinition> objects = new List<InstanceDefinition>(instances);
         foreach (var param in Method.GetParameters())
         {
-            var obj = getparam(param, i++);
+            object obj = null;
+            for (int i = 0; i < objects.Count; i++)
+            {
+                if (objects[i].Type == param.ParameterType)
+                {
+                    obj = objects[i].Value;
+                    objects.RemoveAt(i);
+                    break;
+                }
+            }
             if (obj == null)
-                throw new InexistentInstanceDefinitionException(param.ParameterType);
+            {
+                var constructor = param.ParameterType.GetConstructor(new Type[0]);
+                if (constructor == null)
+                    throw new InexistentInstanceDefinitionException(param.ParameterType);
+                obj = constructor.Invoke(null);
+            }
             parameters.Add(obj);
         }
         Method.Invoke(null, parameters.ToArray());
     }
-
-    private object getparam(ParameterInfo param, int index)
-        => instances
-            .FirstOrDefault(
-                p => p.Condition((param.Name, param.ParameterType, index)))
-            .Value;
 }
 
 

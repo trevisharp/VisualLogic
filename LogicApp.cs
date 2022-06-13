@@ -13,7 +13,7 @@ public abstract class LogicApp
     public int Fps { get; set; } = 25;
     
     protected abstract void DefineDependencyInjection(DIBuilder builder);
-    protected abstract void LoadFromParams(params object[] args);
+    protected abstract void LoadFromParams(AppArgs args);
     protected abstract void SetRunHooks();
     
     public void AddRunHook(string function, HookType hook)
@@ -31,7 +31,8 @@ public abstract class LogicApp
         var app = getapp();
         if (app != null)
         {
-            app.LoadFromParams(args);
+            AppArgs appargs = new AppArgs(args);
+            app.LoadFromParams(appargs);
             app.SetRunHooks();
             DIBuilder builder = new DIBuilder();
             app.DefineDependencyInjection(builder);
