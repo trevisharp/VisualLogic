@@ -12,8 +12,9 @@ public abstract class LogicApp
     private List<(HookType hook, string func)> hooks = new List<(HookType, string)>();
     public int Fps { get; set; } = 25;
     
-    protected abstract void DefineDependencyInjection(DIBuilder builder);
-    protected abstract void LoadFromParams(AppArgs args);
+    protected virtual void DefineDependencyInjection(DIBuilder builder)
+        => builder.AddMethod("logic");
+    protected virtual void LoadFromParams(AppArgs args) { }
     protected virtual void SetRunHooks()
     {
         var method = man.Methods.FirstOrDefault();
