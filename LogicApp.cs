@@ -14,7 +14,13 @@ public abstract class LogicApp
     
     protected abstract void DefineDependencyInjection(DIBuilder builder);
     protected abstract void LoadFromParams(AppArgs args);
-    protected abstract void SetRunHooks();
+    protected virtual void SetRunHooks()
+    {
+        var method = man.Methods.FirstOrDefault();
+        if (method == null) return;
+        string functionname = method.Function.Clone() as string; //Copy to avoid thread problems
+        AddRunHook(functionname, HookType.OnAppStart);
+    }
     
     public void AddRunHook(string function, HookType hook)
         => this.hooks.Add((hook, function));
@@ -33,10 +39,10 @@ public abstract class LogicApp
         {
             AppArgs appargs = new AppArgs(args);
             app.LoadFromParams(appargs);
-            app.SetRunHooks();
             DIBuilder builder = new DIBuilder();
             app.DefineDependencyInjection(builder);
             app.man = builder.Build();
+            app.SetRunHooks();
         }
         var screen = new VisualScreen(app);
         screen.Delay = delay;

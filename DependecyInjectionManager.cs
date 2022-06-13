@@ -9,6 +9,7 @@ namespace VisualLogic;
 public class DependecyInjectionManager
 {    
     private List<DIMethod> methods = new List<DIMethod>();
+    public IEnumerable<DIMethod> Methods => methods;
     
     public DIMethod AddMethod(string name)
     {
