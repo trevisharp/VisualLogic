@@ -73,6 +73,7 @@ public class VisualSurface : VisualElement
     }
     protected override void Draw(Bitmap bmp, Graphics g)
     {
+        throw new NotImplementedException();
         for (int k = 0; k <lenz; k++)
         {
             for (int i = 0; i < lenx - 1; i++)
