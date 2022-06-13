@@ -9,8 +9,8 @@ using Exceptions;
 public class DIMethod
 {
     internal DependecyInjectionManager Parent { get; set; }
-    public string Function { get; set; }
-    public MethodInfo Method { get; set; }
+    internal string Function { get; set; }
+    internal MethodInfo Method { get; set; }
     private List<InstanceDefinition> instances = new List<InstanceDefinition>();
 
     public DIMethod AddInstance<T>(T value)
@@ -22,7 +22,7 @@ public class DIMethod
         return this;
     }
 
-    public void Run()
+    internal void Run()
     {
         List<object> parameters = new List<object>();
         List<InstanceDefinition> objects = new List<InstanceDefinition>(instances);

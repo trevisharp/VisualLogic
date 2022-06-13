@@ -5,7 +5,7 @@ namespace VisualLogic;
 
 using Exceptions;
 
-public class VisualScreen
+internal class VisualScreen
 {
     public VisualScreen(LogicApp parent)
         => this.app = parent;

@@ -26,7 +26,7 @@ public abstract class LogicApp
     public void AddRunHook(string function, HookType hook)
         => this.hooks.Add((hook, function));
     
-    public async Task CallHookAsync(HookType hook)
+    internal async Task CallHookAsync(HookType hook)
     {
         var funcs = getfuncs(hook);
         foreach (var func in funcs)

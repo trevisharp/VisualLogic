@@ -7,7 +7,7 @@ public class DIBuilder
     public DIMethod AddMethod(string name)
         => man.AddMethod(name);
 
-    public DependecyInjectionManager Build()
+    internal DependecyInjectionManager Build()
     {
         var finalmanager = this.man;
         this.man = null;

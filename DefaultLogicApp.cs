@@ -1,5 +1,5 @@
 namespace VisualLogic;
-public class DefaultLogicApp : LogicApp
+internal class DefaultLogicApp : LogicApp
 {
     protected override void DefineDependencyInjection(DIBuilder builder)
     {

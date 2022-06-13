@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace VisualLogic;
 
-public class DependecyInjectionManager
+internal class DependecyInjectionManager
 {    
     private List<DIMethod> methods = new List<DIMethod>();
     public IEnumerable<DIMethod> Methods => methods;
