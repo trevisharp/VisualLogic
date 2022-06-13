@@ -40,10 +40,19 @@ public class DIMethod
             }
             if (obj == null)
             {
-                var constructor = param.ParameterType.GetConstructor(new Type[0]);
-                if (constructor == null)
-                    throw new InexistentInstanceDefinitionException(param.ParameterType);
-                obj = constructor.Invoke(null);
+                if (param.ParameterType.Name.Contains("<>c__DisplayClass")) //local variable
+                {
+                    throw new GlobalVariableException();
+                }
+                else if (param.DefaultValue != DBNull.Value) // default value parameter
+                    obj = param.DefaultValue;
+                else // Non-defined instance
+                {
+                    var constructor = param.ParameterType.GetConstructor(new Type[0]);
+                    if (constructor == null)
+                        throw new InexistentInstanceDefinitionException(param.ParameterType);
+                    obj = constructor.Invoke(null);
+                }
             }
             parameters.Add(obj);
         }
