@@ -1,21 +1,18 @@
-using System;
 using System.Drawing;
 
 namespace VisualLogic.Elements;
 
 using Utils;
 
-public class VisualArray : VisualElement
+public class vArray : VisualElement
 {
-    private float[] data;
-    private PlotBar plot;
+    protected float[] data;
+    protected PlotBar plot;
 
-    public VisualArray(int min, int max, int values)
+    public vArray() : this(0, 1000, 50) { }
+    public vArray(int min, int max, int values)
     {
         data = new float[values];
-        Random rand = new Random();
-        for (int k = 0; k < values; k++)
-            data[k] = rand.Next(min, max + 1);
         this.plot = new PlotBar();
         this.plot.Max = max;
         this.plot.Min = min;

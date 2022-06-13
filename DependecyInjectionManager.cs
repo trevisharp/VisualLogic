@@ -1,42 +1,17 @@
 using System;
+using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace VisualLogic;
 
-using Exceptions;
-
-public class DependecyInjectionManager
-{
-    internal class InstanceDefinition
-    {
-        public Type Type { get; set; }
-        public object Value { get; set; }
-        public Predicate<string> Condition { get; set; }
-    }
+internal class DependecyInjectionManager
+{    
+    private List<DIMethod> methods = new List<DIMethod>();
+    public IEnumerable<DIMethod> Methods => methods;
     
-    #region Private Fields
-    
-    private Dictionary<string, MethodInfo> methods = new Dictionary<string, MethodInfo>();
-    private List<InstanceDefinition> instances = new List<InstanceDefinition>();
-
-    #endregion
-
-    #region Public Methods
-
-    public void AddInstance<T>(T value, Predicate<string> condition = null)
-    {
-        if (condition == null)
-            condition = s => true;
-        InstanceDefinition def = new InstanceDefinition();
-        def.Type = typeof(T);
-        def.Value = value;
-        def.Condition = condition;
-        this.instances.Add(def);
-    }
-    
-    public void AddMethod(string name)
+    public DIMethod AddMethod(string name)
     {
         var types = Assembly.GetEntryAssembly().GetTypes();
         foreach (var type in types)
@@ -44,22 +19,28 @@ public class DependecyInjectionManager
             var lwname = type.Name.ToLower();
             if (!lwname.Contains("program"))
                 continue;
-            addmethod(type, name);
-            return;
+            var method = getmethod(type, name);
+            if (method != null)
+            {
+                methods.Add(method);
+                return method;
+            }
         }
+        return null;
     }
 
     public void RunAll()
     {
         foreach (var method in methods)
-            run(method.Value);
+            method.Run();
     }
 
     public void Run(string name)
     {
-        if (name == null || !methods.ContainsKey(name))
+        var method = methods.FirstOrDefault(m => m.Function == name);
+        if (method is null)
             throw new Exception("Invalid method name");
-        run(methods[name]);
+        method.Run();
     }
 
     public async Task RunAsync(string name)
@@ -70,10 +51,6 @@ public class DependecyInjectionManager
         });
     }
     
-    #endregion
-
-    #region Private Methods
-
     public async Task RunAllAsync()
     {
         await Task.Factory.StartNew(() =>
@@ -82,31 +59,7 @@ public class DependecyInjectionManager
         });
     }
 
-    private void run(MethodInfo method)
-    {
-        List<object> parameters = new List<object>();
-        foreach (var param in method.GetParameters())
-        {
-            var obj = getparam(param);
-            if (obj == null)
-                throw new InexistentInstanceDefinitionException(param.ParameterType);
-            parameters.Add(obj);
-        }
-        method.Invoke(null, parameters.ToArray());
-    }
-
-    private object getparam(ParameterInfo param)
-    {
-        foreach (var instance in this.instances)
-        {
-            if (instance.Type == param.ParameterType 
-                && instance.Condition(param.Name))
-                return instance.Value;
-        }
-        return null;
-    }
-
-    private void addmethod(Type type, string name)
+    private DIMethod getmethod(Type type, string name)
     {
         foreach (var func in type.GetRuntimeMethods())
         {
@@ -115,10 +68,12 @@ public class DependecyInjectionManager
             if (lwname.Length < expected.Length ||
                 lwname.Substring(0, expected.Length) != expected)
                 continue;
-            this.methods.Add(name, func);
-            return;
+            DIMethod method = new DIMethod();
+            method.Parent = this;
+            method.Function = name;
+            method.Method = func;
+            return method;
         }
+        return null;
     }
-
-    #endregion
 }
