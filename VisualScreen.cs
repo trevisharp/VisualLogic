@@ -66,6 +66,23 @@ internal class VisualScreen
             if (Delay > 0)
                 tm.Start();
 
+            Point? p = null;
+            this.form.MouseDown += (mdo, mde) =>
+            {
+                p = mde.Location;
+            };
+            
+            this.form.MouseUp += (muo, mue) =>
+            {
+                p = null;
+            };
+
+            this.form.MouseMove += (mmo, mme) =>
+            {
+                if (p is null)
+                    return;
+            };
+
             await app.CallHookAsync(HookType.OnAppStart);
         };
         Application.Run(this.form);

@@ -64,14 +64,23 @@ public class Plot3DCamera
         g.DrawPolygon(pen, pts);
     }
 
-    public void FillPolygon(Graphics g, Brush brush, Bitmap bmp, float ppv, params Vector[] points)
+    public void FillPolygon(Graphics g, Brush brush, int wid, int hei, float ppv, params Vector[] points)
     {
         var pts = points.Select(v => vectortoscreen(v)).ToArray();
         pts = pts.Select(p => new PointF(
-            ppv * p.X + bmp.Width / 2,
-            ppv * p.Y + bmp.Height / 2))
-            .ToArray();
+            ppv * p.X + wid,
+            ppv * p.Y + hei
+            )).ToArray();
         g.FillPolygon(brush, pts);
+    }
+
+    public void FillPoint(Graphics g, Brush brush, int wid, int hei, float ppv, Vector vec)
+    {
+        var pt = vectortoscreen(vec);
+        g.FillEllipse(brush, 
+            (float)(ppv * pt.X + wid - 5), 
+            (float)(ppv * pt.Y + hei - 5),
+            10f, 10f);
     }
 
     private void updateplane()
