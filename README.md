@@ -25,16 +25,16 @@ using VisualLogic.Elements;
 public class SortLogicApp : LogicApp
 {
     public int ArrayLength { get; set; }
-    protected override DIBuilder DefineDependencyInjection(DIBuilder builder)
+    protected override void DefineDependencyInjection(DIBuilder builder)
     {
-        return builder
+        builder
             .AddMethod("solution")
-            .AddInstance(new VisualArray(100, 1100, ArrayLength));
+            .AddInstance(new vRandomArray(100, 1100, ArrayLength));
     }
 
-    protected override void LoadFromParams(params object[] args)
+    protected override void LoadFromParams(AppArgs args)
     {
-        this.ArrayLength = (int)args[0];
+        this.ArrayLength = args.get(0, 50);
     }
 
     protected override void SetRunHooks()
@@ -50,11 +50,12 @@ Usando o DefineDependencyInjection você define as funções a serem buscadas us
 O momento de chamada de cada função é definido pelo SetRunHooks.
 
 ``` cs
+using VisualLogic;
 using VisualLogic.Elements;
 
-SortLogicApp.Run(25, 40);
+LogicApp.Run(25, 40);
 
-void solution(VisualArray array)
+void solution(vRandomArray array)
 {
     bool ordenado = false;
     while (!ordenado)
@@ -74,8 +75,8 @@ void solution(VisualArray array)
 }
 ```
 
-Uma aplicação com a solution vazia pode ser entregue ao usuário. Lá ele pode implementar e testar a sua solução enquanto varia os parâmetros de Delay de apresentação e tamanho do Array.
-É importante perceber que é possível implementar heranças de VisualElement possibilitando diversos tipos de desafios ou utilizar um objeto existente na VisualLogic.Elements.
+Ainda sim, é possível não implementar a AppLogic usando valores padrões de cada tipo.
+A implementação acima funciona perfeitamente sem o SortLogicApp no projeto. Note que o parâmetro 40, no LogicApp.Run não terá efeito pois a instância padrão de vArray será utilizada.
 
 Normalmente seu .csproj deve ser como o abaixo, uma aplicação UseWindowsForms=true para net6.0-windows.
 
@@ -89,16 +90,36 @@ Normalmente seu .csproj deve ser como o abaixo, uma aplicação UseWindowsForms=
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="VisualLogic" Version="1.2.0" />
+    <PackageReference Include="VisualLogic" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
 ```
+
+Você ainda pode criar seus próprios elementos ou derivar de elementos visuais existentes a partir da classe
+VisualElement.
+
+## Visual Elements
+
+### vArray
+
+A simple array initializate with zeros. The default instance is for 50 values between 0 and 1000.
+
+### vRandomArray
+
+Inheriths from vArray and add Random data in the vector. The default instance is for 50 values between 0 and 1000.
+
+### vSurface
+
+A 3D Surface from y = f(x, z) function. The default instance is for f(x, z) = 0 with 0 <= x <= 20.0, 0 <= z <= 5.0, 0 <= y <= 5.0 and resolution of 0.1.
+
+### vRandomSurface
+
+Inheriths from vSurface and add Random data in the function. The default instance is for f(x, z) = 0 with 0 <= x <= 20.0, 0 <= z <= 5.0, 0 <= y <= 5.0 and resolution of 0.1.
 
 ## Future Improvements
 
 - Change Tutorial to English
 - Create a Full documentation
 - Add more default Elements
-- Improve DependecyInjection abstraction
 - Change desktop framework to a MAUI cross-plataform
