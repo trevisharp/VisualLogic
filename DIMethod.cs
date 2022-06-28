@@ -29,7 +29,7 @@ public class DIMethod
         foreach (var param in Method.GetParameters())
         {
             object obj = null;
-            for (int i = 0; i < objects.Count; i++)
+            for (int i = 0; i < objects.Count; i++) // find definition in LogicApp
             {
                 if (objects[i].Type == param.ParameterType)
                 {
@@ -40,14 +40,13 @@ public class DIMethod
             }
             if (obj == null)
             {
-                if (param.ParameterType.Name.Contains("<>c__DisplayClass")) //local variable
-                {
+                if (param.ParameterType.Name.Contains("<>c__DisplayClass")) // local variable
                     throw new GlobalVariableException();
-                }
                 else if (param.DefaultValue != DBNull.Value) // default value parameter
                     obj = param.DefaultValue;
                 else // Non-defined instance
                 {
+                    // use default constructor
                     var constructor = param.ParameterType.GetConstructor(new Type[0]);
                     if (constructor == null)
                         throw new InexistentInstanceDefinitionException(param.ParameterType);
@@ -59,5 +58,3 @@ public class DIMethod
         Method.Invoke(null, parameters.ToArray());
     }
 }
-
-

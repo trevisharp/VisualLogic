@@ -1,5 +1,3 @@
-global using static System.Console;
-
 namespace VisualLogic;
 
 public class AppArgs

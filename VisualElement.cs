@@ -5,7 +5,7 @@ namespace VisualLogic;
 
 public abstract class VisualElement
 {
-    public static VisualArgs VisualArguments { get; set; }
+    internal static VisualArgs VisualArguments { get; set; }
 
     protected void Update()
     {
