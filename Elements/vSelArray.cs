@@ -15,7 +15,13 @@ public class vSelArray : vArray
 
     public override float this[int i]
     {
-        get => base[i];
+        get
+        {
+            var psb = this.plot as PlotSelectBar;
+            psb.SelectedIndex = i;
+            Update();
+            return base[i];
+        }
         set
         {
             var psb = this.plot as PlotSelectBar;

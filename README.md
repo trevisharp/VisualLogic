@@ -109,6 +109,19 @@ A simple array initializate with zeros. The default instance is for 50 values be
 
 Inheriths from vArray and add Random data in the vector. The default instance is for 50 values between 0 and 1000.
 
+### vSelArray
+
+A selection array initializate with zeros. The default instance is for 50 values between 0 and 1000. This array show the last readed/seted value.
+
+### vRandomSelArray
+
+Inheriths from vSelArray and add Random data in the vector. The default instance is for 50 values between 0 and 1000.
+
+### vPyramidSelArray
+
+Inheriths from vSelArray and add Pyramid data format the vector with a random maximum point. The default instance is for 50 values between 0 and 1000.
+
+
 ### vSurface
 
 A 3D Surface from y = f(x, z) function. The default instance is for f(x, z) = 0 with 0 <= x <= 20.0, 0 <= z <= 5.0, 0 <= y <= 5.0 and resolution of 0.1.
