@@ -18,7 +18,7 @@ public class vArray : VisualElement
         this.plot.Min = min;
     }
 
-    public float this[int i]
+    public virtual float this[int i]
     {
         get => data[i];
         set
